@@ -1,5 +1,5 @@
 <?php 
-include 'cs-config.php'; 
+include ('/home/maazali/public_html/comment-system/cs-config.php'); 
 
 class Comment {
 
@@ -12,7 +12,7 @@ class Comment {
 
 
  	
-	protected function __constructor($user_id, $content, $state, $likes, $date, $insert) {
+	public function __construct($user_id, $content, $state, $likes, $date, $insert) {
 		$this->user_id = $user_id;
 		$this->content = $content;
 		$this->state = $state;
@@ -29,7 +29,7 @@ class Comment {
 	}
 
 
-	public function insert_comment() {
+	private function insert_comment() {
 
 			$db_con = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 				if (mysqli_connect_error()) {
@@ -52,17 +52,18 @@ class Comment {
 			}
 		
 
-
-		$comment_info = $db_con->query('SELECT comment_id FROM cs_comments WHERE comment_id = '. $comment_id . ')'->fetch_assoc();
+		$query = 'SELECT * FROM cs_comments WHERE comment_id = ' . $comment_id;
+		$result = $db_con->query($query);
+		$comment_info = $result->fetch_assoc();
 
 		if ($comment_info) {
 			
 			$id = $comment_id;
 			$user_id = $comment_info['user_id'];
 			$content = $comment_info['content'];
+			$date = $comment_info['comment_date'];
 			$state = $comment_info['comment_state'];
 			$likes = $comment_info['likes'];
-			$date = $comment_info['comment_date'];
 
 			$comment = new Comment($user_id, $content, $state, $likes, $date, false);
 

@@ -1,13 +1,15 @@
 <?php
-	include 'header.php';
+	include ('header.php');
 
 
-	$my_comment = Comment::get_comment(1);
-
-	echo $my_comment->content;
-	echo $my_comment->user_id;
-	echo $my_comment->likes;
+	$my_comment = new Comment(32, "Yet another comment to test the coolness?", "deleted", 15, time(), true);
 
 
-	include 'footer.php';
+	echo $my_comment->content .'<br />';
+	echo $my_comment->user_id .'<br />';
+	echo $my_comment->likes .'<br />';
+	echo $my_comment->date . '<br />';
+
+
+	include ('footer.php');
 ?>

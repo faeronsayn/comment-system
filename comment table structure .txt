@@ -1,4 +1,0 @@
-Table columns 
-
-comment_id, user_id, comment_date, content, comment_state, likes
-
