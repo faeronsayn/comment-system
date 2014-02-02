@@ -9,7 +9,7 @@ class Comment {
 	public $state;
 	public $likes;
 	public $date;
-
+	public $last_updated;
 
  	
 	public function __construct($user_id, $content, $state, $likes, $date, $insert) {
@@ -18,6 +18,7 @@ class Comment {
 		$this->state = $state;
 		$this->likes = $likes;
 		$this->date = $date;
+		$this->last_updated = $date;
 
 
 		if ($insert) {
@@ -42,6 +43,26 @@ class Comment {
 	}
 
 
+	public static function update_comment($comment_id, $updated_content) {
+
+		$update_comment = Comment::get_comment($comment_id);
+
+		$update_comment->content = $updated_content;
+		$update_comment->last_updated = time();
+
+		$db_con = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+			if (mysqli_connect_error()) {
+			    die('Connect Error (' . mysqli_connect_errno() . ') '
+			            . mysqli_connect_error());
+			}
+
+		$sql = 'UPDATE cs_comments SET content = "'. $update_comment->content . '", last_updated = ' .  $update_comment->last_updated . ' WHERE comment_id = ' . $update_comment->id;
+			
+		$db_con->query($sql);
+
+		return $update_comment;
+
+	}
 
 	public static function get_comment( $comment_id ) {
 
